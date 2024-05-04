@@ -51,7 +51,7 @@ Class = chl_conn.Class
 ```
 
 #### MATLAB Execution
-To use Chl-CONNECT in MATALB:
+To use Chl-CONNECT in MATAB:
 ```matlab
 addpath('./common')
 [Chl,Class]=Chl_CONNECT({Rrs412,Rrs443,Rrs490,Rrs531,Rrs551,Rrs665,Rrs748});
