@@ -1,9 +1,7 @@
 import common.classification_functions as cf
-import common.meta
 import numpy as np
-import joblib
 import os
-import time
+
 
 class Chl_CONNECT:
     def __init__(self, Rrs_input: list[np.ndarray], 
@@ -12,7 +10,7 @@ class Chl_CONNECT:
                  sensor: str ='MODIS',
                  spectralShift: bool = True,
                  logRrsNN: bool = False,
-                 logRrsClassif: bool = True,
+                 logRrsClassif: bool = False,
                  pTransform: bool = False):
         self.Rrs_input = Rrs_input
         self.method = method

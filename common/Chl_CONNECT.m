@@ -1,6 +1,6 @@
 function [Chl, Class, P, Chla,invalid_mask] = Chl_CONNECT(Rrs,opts)
 % Syntax:
-%   Chl = Chl_NN_217_1_v2(Rrs,varargin)
+%   Chl = Chl_CONNECT(Rrs,varargin)
 %
 % Input Arguments:
 %   (Required)
@@ -24,7 +24,7 @@ function [Chl, Class, P, Chla,invalid_mask] = Chl_CONNECT(Rrs,opts)
 % Outputs:
 %   Chl                 - Chl-a concentration
 %                           [vector | matrix]
-%   Class               - 17 OWTs defined in (Melin & Vantrepotte,2015)
+%   Class               - 5 OWTs defined in (Tran et al., 2023)
 %                           [vector | matrix]
 %   p                   - Probability for each Class
 %                           [vector | matrix]
@@ -99,7 +99,6 @@ function [Chl, Class, P, Chla,invalid_mask] = Chl_CONNECT(Rrs,opts)
             vis_nir_bands = SensorBands.modis_vis_nir;
     end
 
-    % eval(sprintf('load("Input_probability_%s_%s_17.mat")',opts.method,opts.sensor))
     
     % Handle Rrs input
     if isnumeric(Rrs)
@@ -175,7 +174,7 @@ function [Chl, Class, P, Chla,invalid_mask] = Chl_CONNECT(Rrs,opts)
         Rrs_input_1 = Rrs_input_2;
     end
     
-    % Apply NN2-17 model for OWTs 2-17
+    % Apply clear model
     model_clearPath = fullfile(inputFilePath,'model_clear.h5');
     [mean_X_1, std_X_1, WB_1] = getModelInfo(model_clearPath);
     % [mean_X_2_17, std_X_2_17, WB_2_17] = getModelInfo(model_2_17Path);
@@ -186,7 +185,7 @@ function [Chl, Class, P, Chla,invalid_mask] = Chl_CONNECT(Rrs,opts)
     Chla{1}=10.^predictNN(WB_1,Rrs_input_1);
     Chla{1}=HSF.handle_inf_img(Chla{1});
 
-    % Apply NN1 model for OWT 1
+    % Apply turbid model
     model_turbidPath = fullfile(inputFilePath,'model_turbid.h5');
     [mean_X_2, std_X_2, WB_2] = getModelInfo(model_turbidPath);
     % [mean_X_1, std_X_1, WB_1] = getModelInfo(model_1Path);
@@ -210,10 +209,13 @@ function [Chl, Class, P, Chla,invalid_mask] = Chl_CONNECT(Rrs,opts)
     end
     p2(invalid_mask)=0;
     Chla{2}(invalid_mask)=0;
+
+    % Exclude unrealistic values
     mask1=Chla{1}>15000;
     p1(mask1)=0;
     mask2=Chla{2}>15000;
     p1(mask2)=0;
+
     % Perform the combination with the OWT-specific probabilities as
     % Blending coefficients
     Chl_n(:,1)=p1.*Chla{1};
