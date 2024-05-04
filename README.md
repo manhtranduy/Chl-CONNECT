@@ -12,15 +12,14 @@ This repository contains source code for the following papers:
 
 ### Prerequisites
 Before installing and using Chl-CONNECT, please ensure your system meets the following requirements:
-- Python 3.7 or later: Essential for running the Python scripts.
-- NumPy: For handling large arrays and matrices.
-- SciPy: Used for scientific computing and technical computing.
-- h5py: Necessary for handling H5 model files in Python.
-- TensorFlow or Keras: For building and running neural network models.
-- Matplotlib: Optional but recommended for visualizing data.
-- Pandas: For data manipulation and analysis, particularly used in classification_functions.py.
-- scikit-learn: May be required for any machine learning models or additional statistical functions used in classification_functions.py.
-- joblib: For efficient model saving and loading.
+- Python 3.7 or later
+- NumPy
+- SciPy:
+- h5py
+- Matplotlib
+- Pandas
+- scikit-learn
+- joblib
 - MATLAB (optional): Required only if you are running MATLAB scripts or translating MATLAB code to Python.
 
 Install these Python packages using pip:
