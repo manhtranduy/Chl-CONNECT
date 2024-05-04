@@ -1,7 +1,7 @@
 function [p, Class, D, Pdf] = probability(Input,Rrs_input, opts)
 
     % Syntax:
-    %   Probability(Input, Rrs_norm, varargin)
+    %   Probability(Input, Rrs_input, varargin)
     %
     % Input Arguments:
     %   (Required)
@@ -9,7 +9,7 @@ function [p, Class, D, Pdf] = probability(Input,Rrs_input, opts)
     %                         {cov_matrix, mean_matrix} - 'gaussian'
     %                         coefficients - 'logistic'
     %
-    %   Rrs_norm            - Normalized remote sensing reflectance
+    %   Rrs_input            - Normalized remote sensing reflectance
     %                           [vector | matrix]
     %   (Optional)
     %   method              - Probability method
