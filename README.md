@@ -2,7 +2,8 @@
 **Combination Of Neural Network models for Estimating Chlorophyll-a over Turbid and Clear Waters**
 
 ## Overview
-Chl-CONNECT is a comprehensive Python library designed for analyzing and classifying chlorophyll concentrations using satellite sensor data. The library applies advanced machine learning and statistical methods to predict and classify chlorophyll data accurately, making it invaluable for environmental and ecological research.
+Chl-CONNECT is a Python library designed for estimating chlorophyll concentrations for multiple satellite sensors including MODIS, MERIS, OLCI, and MSI. 
+The library applies machine learning and statistical methods to predict chlorophyll concentrations and classify water body into different Optical Water Types.
 
 ## Installation
 
@@ -47,9 +48,6 @@ chl_conn = Chl_CONNECT(Rrs_input=[Rrs412, Rrs443, Rrs488, Rrs531, Rrs551, Rrs667
 # Retrieve chlorophyll concentrations and Optical Water Types
 Chl = chl_conn.Chl
 Class = chl_conn.Class
-
-print("Chlorophyll Concentrations:", Chl)
-print("Classification Results:", Class)
 ```
 
 ### Advanced Use
