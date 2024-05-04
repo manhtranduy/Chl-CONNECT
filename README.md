@@ -6,7 +6,7 @@ Chl-CONNECT is a Python library designed for estimating chlorophyll concentratio
 The library applies machine learning and statistical methods to predict chlorophyll concentrations and classify water body into different Optical Water Types.
 ## About
 This repository contains source code for the following papers:
-* [Tran, M.D.; Vantrepotte, V.; Loisel, H.; Oliveira, E.N.; Tran, K.T.; Jorge, D.; Mériaux, X.; Paranhos, R. Band Ratios Combination for Estimating Chlorophyll-a from Sentinel-2 and Sentinel-3 in Coastal Waters](https://doi.org/10.3390/rs15061653). Remote Sens. 2023, 15, 1653. https://doi.org/10.3390/rs15061653
+* Tran, M.D.; Vantrepotte, V.; Loisel, H.; Oliveira, E.N.; Tran, K.T.; Jorge, D.; Mériaux, X.; Paranhos, R. Band Ratios Combination for Estimating Chlorophyll-a from Sentinel-2 and Sentinel-3 in Coastal Waters. Remote Sens. 2023, 15, 1653. https://doi.org/10.3390/rs15061653
 
 ## Installation
 
