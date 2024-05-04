@@ -14,7 +14,7 @@ This repository contains source code for the following papers:
 Before installing and using Chl-CONNECT, please ensure your system meets the following requirements:
 - Python 3.7 or later
 - NumPy
-- SciPy:
+- SciPy
 - h5py
 - Matplotlib
 - Pandas
