@@ -4,6 +4,33 @@ import os
 
 
 class Chl_CONNECT:
+    """
+    This module (Chl_CONNECT.py) is responsible for connecting various chlorophyll-related data processing functions and integrating
+    them into a single class for easy access and manipulation.
+    
+    Attributes:
+        Rrs_input (list[np.ndarray]): Input remote sensing reflectance data.
+        method (str): Method used for calculations, defaults to 'logreg'.
+        distribution (str): Type of distribution assumed for data modeling, defaults to 'gamma'.
+        sensor (str): Type of sensor used for data collection, defaults to 'MODIS'.
+        spectralShift (bool): Whether spectral shifting is applied, defaults to True.
+        logRrsNN (bool): If True, applies log transformation to Rrs data for neural network, defaults to False.
+        logRrsClassif (bool): If True, applies log transformation to Rrs data for classification, defaults to False.
+        pTransform (bool): If True, performs probability transformation on the data, defaults to False.
+    
+    Note:
+        The default settings are tailored for MODIS sensor data but can be adjusted for other sensors.
+    
+    Dependencies:
+        numpy, os
+    
+    Example:
+        from Chl_CONNECT import Chl_CONNECT
+        chl_conn = Chl_CONNECT(Rrs_input=[Rrs412,Rrs443,Rrs488,Rrs531,Rrs551,Rrs667,Rrs748], 
+                               sensor='MODIS')
+        Chl = chl_conn.Chl
+        Class = chl_conn.Class
+    """
     def __init__(self, Rrs_input: list[np.ndarray], 
                  method: str = 'logreg', 
                  distribution: str ='gamma', 
@@ -112,12 +139,55 @@ class Chl_CONNECT:
             self.Chl = Chl
 
 def standardize(Z, means, stds):
+    """
+    Standardizes the given data by subtracting the mean and dividing by the standard deviation.
+    
+    Parameters:
+        Z (np.ndarray): The data array to standardize.
+        means (np.ndarray): The mean values for each feature.
+        stds (np.ndarray): The standard deviation values for each feature.
+    
+    Returns:
+        np.ndarray: The standardized data.
+    
+    Example:
+        standardized_data = standardize(data, mean_values, std_values)
+    """
     return (Z - means) / stds
 
 def inverse_standardize(Z, means, stds):
+    """
+    Reverses the standardization of data by applying the mean and standard deviations back to the data.
+    
+    Parameters:
+        Z (np.ndarray): The standardized data array.
+        means (np.ndarray): The mean values for each feature that were originally subtracted.
+        stds (np.ndarray): The standard deviation values for each feature that were originally used to divide the data.
+    
+    Returns:
+        np.ndarray: The original data before standardization.
+    
+    Example:
+        original_data = inverse_standardize(standardized_data, mean_values, std_values)
+    """
+
     return Z * stds + means
 
 def predict(weights_and_biases, X):
+    """
+    Predicts the output using a neural network model by applying weights and biases through matrix multiplication and adding bias.
+    
+    Parameters:
+        weights_and_biases (list of tuples): A list where each tuple contains the weights and biases for one layer of the network.
+        X (np.ndarray): The input data for which predictions are needed.
+    
+    Returns:
+        np.ndarray: The predicted output.
+    
+    Example:
+        output = predict(weights_and_biases, input_data)
+    """
+
     for i, (weights, biases) in enumerate(weights_and_biases):
         # Matrix multiplication and add bias
         X = np.dot(X, weights) + biases
@@ -127,9 +197,33 @@ def predict(weights_and_biases, X):
     return X.flatten()
 
 def relu(x):
+    """
+    Applies the ReLU (Rectified Linear Unit) activation function which converts all negative values in the array to zero.
+    
+    Parameters:
+        x (np.ndarray): Data array on which to apply ReLU.
+    
+    Returns:
+        np.ndarray: Array with ReLU applied.
+    
+    Example:
+        activated_data = relu(data)
+    """
     return np.maximum(0, x)
 
 def NN_info(inputFilePath):
+    """
+    Loads neural network model information, including scale factors and weights, from a specified file path.
+    
+    Parameters:
+        inputFilePath (str): The path to the file containing the neural network model data.
+    
+    Returns:
+        tuple: Contains scale factors for inputs, scale factors for outputs, and a list of weights and biases for the layers.
+    
+    Example:
+        scale_factors_x, scale_factors_y, weights_biases = NN_info('path/to/model.h5')
+    """
     import h5py
     scaleX={}
     scaleY={}

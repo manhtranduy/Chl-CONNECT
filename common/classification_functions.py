@@ -7,7 +7,20 @@ import os
 
 
 def normalize_Rrs(Rrs,wave_lengths):
-    # Calculate the area under the curve for each row in Rrs
+    """
+    Normalizes remote sensing reflectance (Rrs) data by calculating the area under the curve for each row of data. 
+    This normalization helps in preprocessing data for further analysis and classification.
+    
+    Parameters:
+        Rrs (np.ndarray): The remote sensing reflectance data as a numpy array.
+        wave_lengths (np.ndarray): The corresponding wavelengths for the Rrs data.
+    
+    Returns:
+        np.ndarray: The normalized Rrs data.
+    
+    Example:
+        normalized_data = normalize_Rrs(Rrs_data, wave_lengths)
+    """
     area = trapz(Rrs, wave_lengths, axis=1)
     
     # Normalize Rrs by the calculated area
@@ -18,7 +31,23 @@ def probability(model, rrs_norm,
                 method='pdf', 
                 distribution='gamma',
                 logRrs=True):
-
+    """
+    Calculates the probability of Rrs data belonging to certain OWTs using specified models and methods. 
+    This function can handle transformations such as logarithmic scaling of Rrs data before processing.
+    
+    Parameters:
+        model (tuple): The model parameters, typically including mean and covariance matrices.
+        rrs_norm (np.ndarray): Normalized Rrs data on which probabilities are to be computed.
+        method (str, optional): The method to compute probabilities, defaults to 'pdf'.
+        distribution (str, optional): The assumed distribution for the calculation, defaults to 'gamma'.
+        logRrs (bool, optional): Indicates if logarithmic transformation was applied, defaults to True.
+    
+    Returns:
+        tuple: The classification results, including class probabilities and, optionally, other metrics.
+    
+    Example:
+        class_probs = probability(model, normalized_data, method='pdf', distribution='gamma', logRrs=True)
+    """
     # Transform Rrs
     if logRrs:
         rrs_input = np.log10(rrs_norm.astype(float))
@@ -107,7 +136,25 @@ def Eumetsat_classif17(Rrs,
                        sensor='OLCI',
                        logRrs=True,
                        spectralShift=False):
+    """
+    Classifies Rrs data into 17 OWTs according to Melin & Vantrepotte., (2015). 
+    This function supports multiple methods and distributions,
+    tailored specifically for chlorophyll data analysis from satellite imagery.
     
+    Parameters:
+        Rrs (np.ndarray): Remote sensing reflectance data, potentially multi-dimensional.
+        method (str, optional): Classification method to use, defaults to 'pdf'.
+        distribution (str, optional): Assumed distribution for classification, defaults to 'gamma'.
+        sensor (str, optional): Type of sensor data being classified, defaults to 'OLCI'.
+        logRrs (bool, optional): Indicates if Rrs data has been logarithmically transformed, defaults to True.
+        spectralShift (bool, optional): Indicates if spectral shift corrections are applied, defaults to False.
+    
+    Returns:
+        tuple: A tuple containing classified labels and probabilities, structured according to input dimensions.
+    
+    Example:
+        predicted_classes, probabilities = Eumetsat_classify17(Rrs_data)
+    """
     if isinstance(Rrs, list):
         Rrs = np.stack(Rrs,2)
         
@@ -184,6 +231,24 @@ def classif5(Rrs,
             sensor='OLCI',
             logRrs=True,
             spectralShift=False):
+    """
+    Classifies Rrs data into 17 OWTs according to Tran et al., (2023). 
+   
+    Parameters:
+        Rrs (np.ndarray): Remote sensing reflectance data, which can be multi-dimensional, either in list or numpy array format.
+        method (str, optional): Specifies the classification method, with default as 'pdf'.
+        distribution (str, optional): Specifies the assumed statistical distribution for classification, with default as 'gamma'.
+        sensor (str, optional): Specifies the type of sensor data being classified, default is 'OLCI'.
+        logRrs (bool, optional): Indicates whether logarithmic transformation was applied to the Rrs data, default is True.
+        spectralShift (bool, optional): Indicates if spectral shift corrections are to be applied, default is False.
+    
+    Returns:
+        tuple: Returns a tuple containing the classification labels and probabilities. The labels are determined based on the highest 
+               probability outcome from the classification process.
+    
+    Example:
+        labels, probabilities = classif5(Rrs_data)
+    """
 
     if isinstance(Rrs, list):
         Rrs = np.stack(Rrs,2)
