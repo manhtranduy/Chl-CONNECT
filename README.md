@@ -20,10 +20,12 @@ Before installing and using Chl-CONNECT, please ensure your system meets the fol
 - MATLAB (optional): Required only if you are running MATLAB scripts or translating MATLAB code to Python.
 
 Install these Python packages using pip:
+```bash
 pip install numpy scipy h5py tensorflow keras matplotlib pandas scikit-learn joblib
 
 ### Setup
 Clone this repository to your local machine:
+
 git clone https://github.com/manhtranduy/Chl-CONNECT.git
 cd Chl-CONNECT
 
