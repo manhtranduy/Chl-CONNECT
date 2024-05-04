@@ -51,16 +51,9 @@ Class = chl_conn.Class
 ```
 
 #### MATLAB Execution
-To use Chl-CONNECT in Python:
-```bash
-from Chl_CONNECT import Chl_CONNECT
-
-# Initialize the Chl_CONNECT class with specified sensor data
-chl_conn = Chl_CONNECT(Rrs_input=[Rrs412, Rrs443, Rrs488, Rrs531, Rrs551, Rrs667, Rrs748], sensor='MODIS')
-
-# Retrieve chlorophyll concentrations and Optical Water Types
-Chl = chl_conn.Chl
-Class = chl_conn.Class
+To use Chl-CONNECT in MATALB:
+```Matlab
+[Chl,Class]=Chl_CONNECT({Rrs412,Rrs443,Rrs490,Rrs531,Rrs551,Rrs665,Rrs748});
 ```
 
 
