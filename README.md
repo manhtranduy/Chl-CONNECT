@@ -1,2 +1,2 @@
 # Chl-CONNECT
-Combination of neural network models for estimating Chlorophyll-a over turbid waters
+Combination Of Neural Network models for Estimating Chlorophyll-a over Turbid and clear waters
