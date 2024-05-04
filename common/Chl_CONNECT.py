@@ -60,11 +60,10 @@ class Chl_CONNECT:
                                     logRrs=self.logRrsClassif,
                                     spectralShift=self.spectralShift)
 
+        p=np.column_stack(p);
+        
         if self.pTransform:
             p = np.sqrt(p) / np.sum(np.sqrt(p), axis=1, keepdims=True)
-        
-        p=np.column_stack(p);
-
         
         # Prepare inputs for Chl predictions
         mask = ~np.isnan(input_1_3).any(axis=1) & ~np.isinf(input_1_3).any(axis=1)
