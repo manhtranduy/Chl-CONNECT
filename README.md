@@ -35,20 +35,22 @@ cd Chl-CONNECT
 
 ### Quick Start Example
 To use Chl-CONNECT for analyzing chlorophyll data in Python:
+```bash
 from Chl_CONNECT import Chl_CONNECT
 
-Assuming Rrs data arrays are defined as NumPy arrays
+# Assuming Rrs data arrays are defined as NumPy arrays
 Rrs412, Rrs443, Rrs488, Rrs531, Rrs551, Rrs667, Rrs748 = [your_rrs_data_here]
 
-Initialize the Chl_CONNECT class with specified sensor data
+# Initialize the Chl_CONNECT class with specified sensor data
 chl_conn = Chl_CONNECT(Rrs_input=[Rrs412, Rrs443, Rrs488, Rrs531, Rrs551, Rrs667, Rrs748], sensor='MODIS')
 
-Retrieve chlorophyll concentrations and classification results
+# Retrieve chlorophyll concentrations and Optical Water Types
 Chl = chl_conn.Chl
 Class = chl_conn.Class
 
 print("Chlorophyll Concentrations:", Chl)
 print("Classification Results:", Class)
+```
 
 ### Advanced Use
 For more advanced features and configurations, including adjusting parameters or using different sensors, please refer to the detailed documentation provided within the project or in the docs directory.
