@@ -22,6 +22,7 @@ Before installing and using Chl-CONNECT, please ensure your system meets the fol
 Install these Python packages using pip:
 ```bash
 pip install numpy scipy h5py tensorflow keras matplotlib pandas scikit-learn joblib
+```bash
 
 ### Setup
 Clone this repository to your local machine:
