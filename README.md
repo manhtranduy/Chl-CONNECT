@@ -20,7 +20,7 @@ Before installing and using Chl-CONNECT, please ensure your system meets the fol
 - Pandas
 - scikit-learn
 - joblib
-- MATLAB (optional): Required only if you are running MATLAB scripts or translating MATLAB code to Python.
+- MATLAB (optional) R2019b or later.
 
 Install these Python packages using pip:
 ```bash
