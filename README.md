@@ -54,7 +54,7 @@ Class = chl_conn.Class
 To use Chl-CONNECT in MATLAB:
 ```matlab
 addpath('./common')
-[Chl,Class]=Chl_CONNECT({Rrs412,Rrs443,Rrs490,Rrs531,Rrs551,Rrs665,Rrs748});
+[Chl,Class]=Chl_CONNECT({Rrs412,Rrs443,Rrs490,Rrs531,Rrs551,Rrs665,Rrs748},'sensor','MODIS');
 ```
 
 
