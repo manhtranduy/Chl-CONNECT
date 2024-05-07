@@ -177,8 +177,8 @@ def add_noise(data, noise_level=0.5):
     noisy_data = np.copy(data)
     for i in range(data.shape[1]):
         # print(i)
-        noise = abs(np.random.normal(0, noise_level[i],data.shape[0]))
-        # noise = np.random.normal(0, noise_level[i],data.shape[0])
+        # noise = abs(np.random.normal(0, noise_level[i],data.shape[0]))
+        noise = np.random.normal(0, noise_level[i],data.shape[0])
         noisy_data[:, i] =noisy_data[:, i]+ noise*noisy_data[:, i]
     return noisy_data
 
