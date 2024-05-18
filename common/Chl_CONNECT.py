@@ -5,8 +5,7 @@ import os
 
 class Chl_CONNECT:
     """
-    This module (Chl_CONNECT.py) is responsible for connecting various chlorophyll-related data processing functions and integrating
-    them into a single class for easy access and manipulation.
+    This module (Chl_CONNECT.py) is responsible for combining two Neural Network models to estimate Chl-a
     
     Attributes:
         Rrs_input (list[np.ndarray]): Input remote sensing reflectance data.

@@ -44,7 +44,7 @@ function [Chl, Class, P, Chla,invalid_mask] = Chl_CONNECT(Rrs,opts)
         opts.method char {mustBeMember(opts.method,{'pdf','logreg'})} = 'logreg'
         opts.distribution char {mustBeMember(opts.distribution,{'normal','gamma'})} = 'gamma'
         opts.classmask double {mustBeMember(opts.classmask,0:17)} = 0
-        opts.treatRrs logical = false
+        opts.spectralShift logical = false
         opts.logRrsNN logical = false
         opts.logRrsClassif logical = false
         opts.pTransform logical = false
@@ -62,6 +62,7 @@ function [Chl, Class, P, Chla,invalid_mask] = Chl_CONNECT(Rrs,opts)
     
     if all(ismember(opts.method,'pdf'))
         OWTs_dir = fullfile(LUT_dir,opts.method);
+        opts.logRrsClassif=true;
         for i=1:opts.version
             Input_probability.cov_matrix(:,:,i)=readmatrix(fullfile(OWTs_dir,sprintf('Cov%i_C%i',opts.version,i)));
             Input_probability.mean_matrix(:,:,i)=readmatrix(fullfile(OWTs_dir,sprintf('Mean%i_C%i',opts.version,i)));
@@ -122,16 +123,11 @@ function [Chl, Class, P, Chla,invalid_mask] = Chl_CONNECT(Rrs,opts)
 
         eval(sprintf('[mx,my] = size(Rrs%i);',vis_nir_bands(i)));
         eval(sprintf('Rrs%i = reshape(Rrs%i,[],1);',vis_nir_bands(i),vis_nir_bands(i)))
-        % if opts.treatRrs
-        %     eval(sprintf('Rrs%i(Rrs%i<0) = 10^-4;',vis_nir_bands(i),vis_nir_bands(i)))
-        % else
-        %     eval(sprintf('Rrs%i(Rrs%i<0) = nan;',vis_nir_bands(i),vis_nir_bands(i)))
-        % end
         eval(sprintf('Rrs_input = [Rrs_input, Rrs%i];',vis_nir_bands(i)));
     end
     
     Rrs_classif=Rrs_input(:,1:end-1);
-    if opts.treatRrs
+    if opts.spectralShift
         ind=any(Rrs_classif<0,2);
         Rrs_classif(ind,:)=Rrs_classif(ind,:)+abs(min(Rrs_classif(ind,:),[],2))+10^-6;
     end
@@ -150,7 +146,6 @@ function [Chl, Class, P, Chla,invalid_mask] = Chl_CONNECT(Rrs,opts)
     Class=reshape(Class,[],1);
 
     % exclude bad values in NIR band
-    % eval(sprintf('p(Rrs%d<=0|isnan(Rrs%d),1)=0;',vis_nir_bands(end),vis_nir_bands(end)))
     eval(sprintf('p(isnan(Rrs%d),1)=0;',vis_nir_bands(end),vis_nir_bands(end)))
 
 
