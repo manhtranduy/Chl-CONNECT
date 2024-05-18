@@ -115,14 +115,14 @@ function [Chl, Class, P, Chla] = Chl_MuBR_NDCIbased(Rrs,opts)
     Rrs_input = [];
     for i = 1:numel(vis_nir_bands)
         if iscell(Rrs)
-            eval(sprintf('Rrs%d = Rrs{%d};',vis_nir_bands(i),i))
+            eval(sprintf('Rrs%i = Rrs{%d};',vis_nir_bands(i),i))
         elseif isnumeric(Rrs)
-            eval(sprintf('Rrs%d = Rrs(:,i);',vis_nir_bands(i),i))
+            eval(sprintf('Rrs%i = Rrs(:,i);',vis_nir_bands(i),i))
         end
 
-        eval(sprintf('[mx,my] = size(Rrs%d);',vis_nir_bands(i)));
-        eval(sprintf('Rrs%d = reshape(Rrs%d,[],1);',vis_nir_bands(i),vis_nir_bands(i)))
-        eval(sprintf('Rrs_input = [Rrs_input, Rrs%d];',vis_nir_bands(i)));
+        eval(sprintf('[mx,my] = size(Rrs%i);',vis_nir_bands(i)));
+        eval(sprintf('Rrs%i = reshape(Rrs%i,[],1);',vis_nir_bands(i),vis_nir_bands(i)))
+        eval(sprintf('Rrs_input = [Rrs_input, Rrs%i];',vis_nir_bands(i)));
     end
 
     Rrs_classif=Rrs_input(:,1:end-1);
@@ -145,7 +145,7 @@ function [Chl, Class, P, Chla] = Chl_MuBR_NDCIbased(Rrs,opts)
     Class=reshape(Class,[],1);
 
     % exclude bad values in NIR band
-    eval(sprintf('p(Rrs%d<=0|isnan(Rrs%d),4:5)=0;',vis_nir_bands(end),vis_nir_bands(end)))
+    eval(sprintf('p(Rrs%i<=0|isnan(Rrs%i),4:5)=0;',vis_nir_bands(end),vis_nir_bands(end)))
 
     % Return probability and Class matrices
     for i=1:size(p,2)
@@ -156,26 +156,26 @@ function [Chl, Class, P, Chla] = Chl_MuBR_NDCIbased(Rrs,opts)
     switch opts.sensor
         case 'meris'
         case 'olci'
-            eval(sprintf('R1=Rrs%d./Rrs%d;',full_bands(4),full_bands(3)));
-            eval(sprintf('R2=Rrs%d./Rrs%d;',full_bands(6),full_bands(4)));
-            eval(sprintf('R3=Rrs%d./Rrs%d;',full_bands(8),full_bands(6)));
-            eval(sprintf('R=(Rrs%d-Rrs%d)./(Rrs%d+Rrs%d);',full_bands(11),full_bands(8),full_bands(11),full_bands(8)));
+            eval(sprintf('R1=Rrs%i./Rrs%i;',full_bands(4),full_bands(3)));
+            eval(sprintf('R2=Rrs%i./Rrs%i;',full_bands(6),full_bands(4)));
+            eval(sprintf('R3=Rrs%i./Rrs%i;',full_bands(8),full_bands(6)));
+            eval(sprintf('R=(Rrs%i-Rrs%i)./(Rrs%i+Rrs%i);',full_bands(11),full_bands(8),full_bands(11),full_bands(8)));
         case 'msi'
-            eval(sprintf('R1=Rrs%d./Rrs%d;',full_bands(2),full_bands(1)));
-            eval(sprintf('R2=Rrs%d./Rrs%d;',full_bands(3),full_bands(2)));
-            eval(sprintf('R3=Rrs%d./Rrs%d;',full_bands(4),full_bands(3)));
-            eval(sprintf('R=(Rrs%d-Rrs%d)./(Rrs%d+Rrs%d);',full_bands(5),full_bands(4),full_bands(5),full_bands(4)));
+            eval(sprintf('R1=Rrs%i./Rrs%i;',full_bands(2),full_bands(1)));
+            eval(sprintf('R2=Rrs%i./Rrs%i;',full_bands(3),full_bands(2)));
+            eval(sprintf('R3=Rrs%i./Rrs%i;',full_bands(4),full_bands(3)));
+            eval(sprintf('R=(Rrs%i-Rrs%i)./(Rrs%i+Rrs%i);',full_bands(5),full_bands(4),full_bands(5),full_bands(4)));
         case 'modis'
-            eval(sprintf('R1=Rrs%d./Rrs%d;',full_bands(3),full_bands(2)));
-            eval(sprintf('R2=Rrs%d./Rrs%d;',full_bands(5),full_bands(3)));
-            eval(sprintf('R3=Rrs%d./Rrs%d;',full_bands(6),full_bands(5)));
-            eval(sprintf('R=(Rrs%d-Rrs%d)./(Rrs%d+Rrs%d);',full_bands(8),full_bands(6),full_bands(8),full_bands(6)));
+            eval(sprintf('R1=Rrs%i./Rrs%i;',full_bands(3),full_bands(2)));
+            eval(sprintf('R2=Rrs%i./Rrs%i;',full_bands(5),full_bands(3)));
+            eval(sprintf('R3=Rrs%i./Rrs%i;',full_bands(6),full_bands(5)));
+            eval(sprintf('R4=Rrs%i-Rrs%i;',full_bands(8),full_bands(6)));
 
         case 'oli'
-        eval(sprintf('R1=Rrs%d./Rrs%d;',full_bands(2),full_bands(1)));
-        eval(sprintf('R2=Rrs%d./Rrs%d;',full_bands(3),full_bands(2)));
-        eval(sprintf('R3=Rrs%d./Rrs%d;',full_bands(4),full_bands(3)));
-        eval(sprintf('R4=Rrs%d./Rrs%d;',full_bands(5),full_bands(4)));
+        eval(sprintf('R1=Rrs%i./Rrs%i;',full_bands(2),full_bands(1)));
+        eval(sprintf('R2=Rrs%i./Rrs%i;',full_bands(3),full_bands(2)));
+        eval(sprintf('R3=Rrs%i./Rrs%i;',full_bands(4),full_bands(3)));
+        eval(sprintf('R4=Rrs%i./Rrs%i;',full_bands(5),full_bands(4)));
     end
 
     % Apply MuBR model for OWTs 1, 2, and 3
@@ -186,7 +186,7 @@ function [Chl, Class, P, Chla] = Chl_MuBR_NDCIbased(Rrs,opts)
     Chla{1}=HSF.handle_inf_img(Chla{1});
     
     % Apply NDCI-based model for OWT 4
-    if strcmp(opts.sensor,'oli')
+    if strcmp(opts.sensor,'oli')|strcmp(opts.sensor,'modis')
         Chla{2}=10.^(coef4(1) + coef4(2).*log10(R1)+ coef4(3).*log10(R2)+ ...
                                 coef4(4).*log10(R3)+ coef4(5).*log10(R4));
     else
