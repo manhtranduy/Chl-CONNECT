@@ -46,15 +46,28 @@ from common.Chl_CONNECT import Chl_CONNECT
 chl_conn = Chl_CONNECT(Rrs_input=[Rrs412, Rrs443, Rrs488, Rrs531, Rrs551, Rrs667, Rrs748], sensor='MODIS')
 
 # Retrieve chlorophyll concentrations and Optical Water Types
-Chl = chl_conn.Chl
-Class = chl_conn.Class
+Chl_modis = chl_conn.Chl
+Class_modis = chl_conn.Class
+
+from common.Chl_MuBR_NDCIbased import Chl_MuBR_NDCIbased
+
+# Initialize the Chl_Chl_MuBR_NDCIbased class with specified sensor data
+chl_mubr = Chl_Chl_MuBR_NDCIbased(Rrs_input=[Rrs412, Rrs443, Rrs490, Rrs510, Rrs560, Rrs665, Rrs709], sensor='OLCI')
+
+# Retrieve chlorophyll concentrations and Optical Water Types
+Chl_olci = chl_mubr.Chl
+Class_olci = chl_mubr.Class
+
 ```
 
 #### MATLAB Execution
-To use Chl-CONNECT in MATLAB:
+To use compute Chl-a in MATLAB:
 ```matlab
 addpath('./common')
-[Chl,Class]=Chl_CONNECT({Rrs412,Rrs443,Rrs490,Rrs531,Rrs551,Rrs665,Rrs748},'sensor','MODIS');
+
+[Chl_modis,Class_modis]=Chl_CONNECT({Rrs412, Rrs443, Rrs490, Rrs531, Rrs551, Rrs665, Rrs748},'sensor','MODIS');
+
+[Chl_olci,Class_olci]=Chl_MuBR_NDCIbased({Rrs412, Rrs443, Rrs490, Rrs510, Rrs560, Rrs665, Rrs709},'sensor','OLCI');
 ```
 
 
