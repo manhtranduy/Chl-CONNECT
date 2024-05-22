@@ -169,7 +169,7 @@ function [Chl, Class, P, Chla] = Chl_MuBR_NDCIbased(Rrs,opts)
             eval(sprintf('R1=Rrs%i./Rrs%i;',full_bands(3),full_bands(2)));
             eval(sprintf('R2=Rrs%i./Rrs%i;',full_bands(5),full_bands(3)));
             eval(sprintf('R3=Rrs%i./Rrs%i;',full_bands(6),full_bands(5)));
-            eval(sprintf('R4=Rrs%i-Rrs%i;',full_bands(8),full_bands(6)));
+            eval(sprintf('R4=Rrs%i./Rrs%i;',full_bands(8),full_bands(6)));
 
         case 'oli'
         eval(sprintf('R1=Rrs%i./Rrs%i;',full_bands(2),full_bands(1)));
