@@ -145,8 +145,6 @@ function [Chl, Class, P, Chla,invalid_mask] = Chl_CONNECT(Rrs,opts)
     end
     Class=reshape(Class,[],1);
 
-    % exclude bad values in NIR band
-    eval(sprintf('p(isnan(Rrs%d),1)=0;',vis_nir_bands(end),vis_nir_bands(end)))
 
 
     % Return probability and Class matrices
