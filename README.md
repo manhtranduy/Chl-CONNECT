@@ -51,8 +51,8 @@ Class_modis = chl_conn.Class
 
 from common.Chl_MuBR_NDCIbased import Chl_MuBR_NDCIbased
 
-# Initialize the Chl_Chl_MuBR_NDCIbased class with specified sensor data
-chl_mubr = Chl_Chl_MuBR_NDCIbased(Rrs_input=[Rrs412, Rrs443, Rrs490, Rrs510, Rrs560, Rrs665, Rrs709], sensor='OLCI')
+# Initialize the Chl_MuBR_NDCIbased class with specified sensor data
+chl_mubr = Chl_MuBR_NDCIbased(Rrs_input=[Rrs412, Rrs443, Rrs490, Rrs510, Rrs560, Rrs665, Rrs709], sensor='OLCI')
 
 # Retrieve chlorophyll concentrations and Optical Water Types
 Chl_olci = chl_mubr.Chl
