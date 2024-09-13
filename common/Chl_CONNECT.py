@@ -54,6 +54,8 @@ class Chl_CONNECT:
         }
         
         bands = bands_map.get(sensor, [])
+        if isinstance(Rrs_input, list):
+            Rrs_input = np.stack(Rrs_input,2)
         
         if Rrs_input.ndim not in (2, 3) or Rrs_input.shape[-1] != len(bands):
             raise ValueError(f'Rrs input for {sensor} sensor must contain {len(bands)} components corresponding to wavelengths at: {bands}')
