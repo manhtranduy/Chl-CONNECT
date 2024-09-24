@@ -77,11 +77,19 @@ class Chl_CONNECT:
         scaleX_1_3, scaleY_1_3, weights_and_biases_1_3 = NN_info(os.path.join(inputFilePath,'model_clear.h5'))
         scaleX_4_5, scaleY_4_5, weights_and_biases_4_5 = NN_info(os.path.join(inputFilePath,'model_turbid.h5'))
         
+        
+        if sensor=='MSI':
+            input_1_3=input_4_5
+            Rrs_classif=input_1_3[:,:-1]
+        else:
+            Rrs_classif=input_1_3
+        
         input_1_3=standardize(input_1_3, scaleX_1_3['mean'], scaleX_1_3['std'])
+        
         input_4_5=standardize(input_4_5, scaleX_4_5['mean'], scaleX_4_5['std'])
         
         # Classification
-        self.Class,p = cf.classif5(Rrs[:,:6],
+        self.Class,p = cf.classif5(Rrs_classif,
                                     method = self.method,
                                     sensor=self.sensor,
                                     distribution=self.distribution,
