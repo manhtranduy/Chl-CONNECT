@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.integrate import trapz
+from scipy.integrate import trapezoid
 from scipy.special import gamma, gammainc
 from scipy.stats import multivariate_normal
 import os
@@ -21,7 +21,7 @@ def normalize_Rrs(Rrs,wave_lengths):
     Example:
         normalized_data = normalize_Rrs(Rrs_data, wave_lengths)
     """
-    area = trapz(Rrs, wave_lengths, axis=1)
+    area = trapezoid(Rrs, wave_lengths, axis=1)
     
     # Normalize Rrs by the calculated area
     Rrs_norm = Rrs / area[:, np.newaxis]
