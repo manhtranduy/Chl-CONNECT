@@ -46,7 +46,7 @@ from common.Chl_CONNECT import Chl_CONNECT
 chl_conn = Chl_CONNECT(Rrs_input=[Rrs412, Rrs443, Rrs488, Rrs531, Rrs551, Rrs667, Rrs748], sensor='MODIS')
 
 # Retrieve chlorophyll concentrations and Optical Water Types
-Chl_modis = chl_conn.Chl
+Chl_modis = chl_conn.Chl_comb
 Class_modis = chl_conn.Class
 
 from common.Chl_MuBR_NDCIbased import Chl_MuBR_NDCIbased
@@ -55,7 +55,7 @@ from common.Chl_MuBR_NDCIbased import Chl_MuBR_NDCIbased
 chl_mubr = Chl_MuBR_NDCIbased(Rrs_input=[Rrs412, Rrs443, Rrs490, Rrs510, Rrs560, Rrs665, Rrs709], sensor='OLCI')
 
 # Retrieve chlorophyll concentrations and Optical Water Types
-Chl_olci = chl_mubr.Chl
+Chl_olci = chl_mubr.Chl_comb
 Class_olci = chl_mubr.Class
 
 ```
