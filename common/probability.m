@@ -38,11 +38,14 @@ function [p, Class, D, Pdf] = probability(Input,Rrs_input, opts)
     
     % Config Inputs
     if strcmp(opts.method,'pdf')
-        % if ~iscell(Input)&&numel(Input)~=2
-        %     error('Input must be a cell array containing covariance and mean matrices')
-        % end
-        cov_matrix=Input.cov_matrix;
-        mean_matrix=Input.mean_matrix;
+        if ~iscell(Input)&&numel(Input)~=2
+            cov_matrix=Input.cov_matrix;
+            mean_matrix=Input.mean_matrix;
+        else
+            cov_matrix=Input{1};
+            mean_matrix=Input{2};
+        end
+
         % Numer of Class
         nc=size(mean_matrix,3);
         % Number of band involved
@@ -71,12 +74,35 @@ function [p, Class, D, Pdf] = probability(Input,Rrs_input, opts)
                 % distribution
                 switch opts.distribution
                     case 'normal'
+                        threshold_D=1488;
                         Pdf(:,i)=mvnpdf(Rrs_input,mean_matrix(:,:,i),cov_matrix(:,:,i));
                         % MS=((2*pi)^(b/2))*(det(cov_matrix(:,:,i)).^(1/2));
                         % Pdf(:,i)=(1/MS)*(exp(-0.5.*D(:,i)));
                     case 'gamma'
+                        threshold_D=432;
                         Pdf(:,i)=gammainc(b/2,D(:,i)./2,'lower')./gamma(b/2);
                         % Pdf(:,i)=gammainc(b/2,sqrt(D(:,i))./2,'lower')./gamma(b/2);
+                end
+    
+            end
+            unclassified_ind = all(Pdf==0,2);
+            D_tmp=D(unclassified_ind,:);
+            for k=1:size(D_tmp,1)
+                while any(D_tmp(k,:)>threshold_D)
+                    D_tmp(k,:)=sqrt(D_tmp(k,:));
+                end
+            end
+
+            D(unclassified_ind,:)=D_tmp;
+            for i=1:nc
+                % distribution
+                switch opts.distribution
+                    case 'normal'
+                        % Pdf(unclassified_ind,i)=mvnpdf(Rrs_input,mean_matrix(:,:,i),cov_matrix(:,:,i));
+                        MS=((2*pi)^(b/2))*(det(cov_matrix(:,:,i)).^(1/2));
+                        Pdf(unclassified_ind,i)=(1/MS)*(exp(-0.5.*D(unclassified_ind,i)));
+                    case 'gamma'
+                        Pdf(unclassified_ind,i)=gammainc(b/2,D(unclassified_ind,i)./2,'lower')./gamma(b/2);
                 end
     
             end
