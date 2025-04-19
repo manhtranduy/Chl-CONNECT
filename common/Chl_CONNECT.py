@@ -1,7 +1,7 @@
 import common.classification_functions as cf
 import numpy as np
 import os
-
+import h5py
 
 class Chl_CONNECT:
     """
@@ -233,7 +233,6 @@ def NN_info(inputFilePath):
     Example:
         scale_factors_x, scale_factors_y, weights_biases = NN_info('path/to/model.h5')
     """
-    import h5py
     scaleX={}
     scaleY={}
     weights_and_biases = []

@@ -4,8 +4,6 @@ from scipy.special import gamma, gammainc
 from scipy.stats import multivariate_normal
 import os
 
-
-
 def normalize_Rrs(Rrs,wave_lengths):
     """
     Normalizes remote sensing reflectance (Rrs) data by calculating the area under the curve for each row of data. 
