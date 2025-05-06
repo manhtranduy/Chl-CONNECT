@@ -1,7 +1,7 @@
 import common.classification_functions as cf
 import numpy as np
 import os
-import h5py
+
 
 class Chl_CONNECT:
     """
@@ -79,17 +79,17 @@ class Chl_CONNECT:
         
         
         if sensor=='MSI':
-            input_1_3=input_4_5
-            Rrs_classif=input_1_3[:,:-1]
+            Rrs_clasif=input_1_3
+            # input_1_3=input_4_5
+            # Rrs_clasif=input_1_3[:,:-1]
         else:
-            Rrs_classif=input_1_3
+            Rrs_clasif=input_1_3
         
         input_1_3=standardize(input_1_3, scaleX_1_3['mean'], scaleX_1_3['std'])
-        
         input_4_5=standardize(input_4_5, scaleX_4_5['mean'], scaleX_4_5['std'])
         
         # Classification
-        self.Class,p = cf.classif5(Rrs_classif,
+        self.Class,p = cf.classif5(Rrs_clasif,
                                     method = self.method,
                                     sensor=self.sensor,
                                     distribution=self.distribution,
@@ -233,6 +233,7 @@ def NN_info(inputFilePath):
     Example:
         scale_factors_x, scale_factors_y, weights_biases = NN_info('path/to/model.h5')
     """
+    import h5py
     scaleX={}
     scaleY={}
     weights_and_biases = []
