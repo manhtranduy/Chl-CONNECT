@@ -1,4 +1,3 @@
-# Chl-CONNECT
 **Combination Of Neural Network models for Estimating Chlorophyll-a over Turbid and Clear Waters**
 
 ## Overview
@@ -80,39 +79,74 @@ addpath('./common')
 ### Performance Metrics
 Our model has been validated against an extensive in-situ/matchup dataset gathered over various environments associated with different trophic levels.
 
-## In-situ Validation Results
+#### In-situ Validation Results
+
+<div align="center" style="display: flex; align-items: flex-start; justify-content: center; gap: 40px;">
+  <!-- Image -->
+  <p style="margin:0;">
+    <img src="docs/images/DST_MODIS_benchmark.png"
+         alt="Chlorophyll-a estimation performance on the Test in-situ Dataset"
+         width="500">
+  </p>
+
+  <!-- Table -->
+  <table>
+    <thead>
+      <tr>
+        <th>Class</th>
+        <th>R<sup>2</sup><sub>log</sub></th>
+        <th>Slope<sub>log</sub></th>
+        <th>MAPD (%)</th>
+        <th>SSPB (%)</th>
+        <th>N</th>
+        <th>Not Valid</th>
+        <th>area<sub>norm</sub></th>
+        <th>Model</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td rowspan="4"><strong>OWT 1</strong></td><td><strong>0.526</strong></td><td>0.700</td><td>41.183</td><td><strong>4.050</strong></td><td>95</td><td>0</td><td><strong>0.640</strong></td><td><strong>CONNECT</strong></td></tr>
+      <tr><td>0.457</td><td><strong>0.769</strong></td><td>49.301</td><td>-72.214</td><td>95</td><td>0</td><td>1.248</td><td>MuBR</td></tr>
+      <tr><td>0.466</td><td>0.653</td><td><strong>33.139</strong></td><td>12.504</td><td>95</td><td>0</td><td>0.767</td><td>OC3M</td></tr>
+      <tr><td>0.380</td><td>0.697</td><td>36.376</td><td>-8.952</td><td>91</td><td>4</td><td>1.228</td><td>OC5‑Gohin</td></tr>
+      <tr><td rowspan="4"><strong>OWT 2</strong></td><td>0.573</td><td><strong>0.753</strong></td><td>43.434</td><td><strong>3.344</strong></td><td>50</td><td>0</td><td><strong>0.386</strong></td><td><strong>CONNECT</strong></td></tr>
+      <tr><td><strong>0.660</strong></td><td>0.564</td><td>37.341</td><td>-50.905</td><td>50</td><td>0</td><td>0.601</td><td>MuBR</td></tr>
+      <tr><td>0.538</td><td>0.249</td><td><strong>36.973</strong></td><td>-3.842</td><td>50</td><td>0</td><td>0.603</td><td>OC3M</td></tr>
+      <tr><td>0.282</td><td>0.291</td><td>38.501</td><td>-21.872</td><td>50</td><td>0</td><td>1.064</td><td>OC5‑Gohin</td></tr>
+      <tr><td rowspan="4"><strong>OWT 3</strong></td><td><strong>0.351</strong></td><td>0.669</td><td><strong>37.569</strong></td><td><strong>1.487</strong></td><td>283</td><td>0</td><td><strong>0.612</strong></td><td><strong>CONNECT</strong></td></tr>
+      <tr><td>0.196</td><td><strong>0.825</strong></td><td>44.990</td><td>-18.499</td><td>283</td><td>0</td><td>0.712</td><td>MuBR</td></tr>
+      <tr><td>0.152</td><td>0.655</td><td>55.836</td><td>36.955</td><td>283</td><td>0</td><td>1.427</td><td>OC3M</td></tr>
+      <tr><td>0.197</td><td>0.743</td><td>46.237</td><td>9.863</td><td>283</td><td>0</td><td>0.803</td><td>OC5‑Gohin</td></tr>
+      <tr><td rowspan="4"><strong>OWT 4</strong></td><td><strong>0.702</strong></td><td><strong>0.870</strong></td><td><strong>33.802</strong></td><td><strong>-3.737</strong></td><td>344</td><td>0</td><td><strong>0.148</strong></td><td><strong>CONNECT</strong></td></tr>
+      <tr><td>0.515</td><td>0.597</td><td>51.495</td><td>-35.330</td><td>344</td><td>0</td><td>0.745</td><td>MuBR</td></tr>
+      <tr><td>0.152</td><td>0.572</td><td>63.927</td><td>-58.791</td><td>344</td><td>0</td><td>1.427</td><td>OC3M</td></tr>
+      <tr><td>0.208</td><td>0.788</td><td>61.950</td><td>-49.994</td><td>340</td><td>4</td><td>1.717</td><td>OC5‑Gohin</td></tr>
+      <tr><td rowspan="4"><strong>OWT 5</strong></td><td><strong>0.643</strong></td><td>0.664</td><td><strong>42.244</strong></td><td><strong>21.630</strong></td><td>32</td><td>0</td><td><strong>0.198</strong></td><td><strong>CONNECT</strong></td></tr>
+      <tr><td>0.012</td><td>0.562</td><td>230.281</td><td>226.145</td><td>32</td><td>0</td><td>1.427</td><td>MuBR</td></tr>
+      <tr><td>0.416</td><td>0.615</td><td>100.211</td><td>100.022</td><td>32</td><td>0</td><td>0.554</td><td>OC3M</td></tr>
+      <tr><td>0.208</td><td><strong>0.987</strong></td><td>82.071</td><td>64.594</td><td>31</td><td>1</td><td>0.457</td><td>OC5‑Gohin</td></tr>
+      <tr><td rowspan="4"><strong>Overall</strong></td><td><strong>0.870</strong></td><td>0.961</td><td><strong>36.769</strong></td><td><strong>1.168</strong></td><td>804</td><td>0</td><td><strong>0.173</strong></td><td><strong>CONNECT</strong></td></tr>
+      <tr><td>0.777</td><td><strong>0.963</strong></td><td>49.477</td><td>-31.877</td><td>804</td><td>0</td><td>0.548</td><td>MuBR</td></tr>
+      <tr><td>0.699</td><td>0.780</td><td>56.138</td><td>-3.469</td><td>804</td><td>0</td><td>1.000</td><td>OC3M</td></tr>
+      <tr><td>0.698</td><td>0.857</td><td>51.441</td><td>-15.322</td><td>795</td><td>9</td><td>1.556</td><td>OC5‑Gohin</td></tr>
+    </tbody>
+  </table>
+</div>
+
+
+#### Matchup Validation Results
 <p align="center">
-  <img src="docs/images/DST_MODIS_benchmark.png" alt="Chlorophyll-a estimation performance on the Test in-situ dataset" width="800">
+  <img src="docs/images/DSM_MODIS_benchmark.png" alt="Chlorophyll-a estimation performance on the Matchup Dataset" width="500">
 </p>
 
-| Class   | R²<sub>log</sub> | Slope<sub>log</sub> | MAPD (%)  | SSPB (%)   | N   | Not Valid | area<sub>norm</sub> | Model     |
-|:--------|:----------------:|:------------------:|:----------:|:-----------:|:----|:----------|:--------------------:|:----------|
-| OWT 1   | **0.526** | 0.700              | 41.183     | **4.050** | 95  | 0         | **0.640** | CONNECT   |
-| OWT 1   | 0.457            | **0.769** | 49.301     | -72.214    | 95  | 0         | 1.248                | MuBR      |
-| OWT 1   | 0.466            | 0.653              | **33.139** | 12.504     | 95  | 0         | 0.767                | OC3M      |
-| OWT 1   | 0.380            | 0.697              | 36.376     | -8.952     | 91  | 4         | 1.228                | OC5-Gohin |
-| OWT 2   | 0.573            | **0.753** | 43.434     | **3.344** | 50  | 0         | **0.386** | CONNECT   |
-| OWT 2   | **0.660** | 0.564              | 37.341     | -50.905    | 50  | 0         | 0.601                | MuBR      |
-| OWT 2   | 0.538            | 0.249              | **36.973** | -3.842     | 50  | 0         | 0.603                | OC3M      |
-| OWT 2   | 0.282            | 0.291              | 38.501     | -21.872    | 50  | 0         | 1.064                | OC5-Gohin |
-| OWT 3   | **0.351** | 0.669              | **37.569** | **1.487** | 283 | 0         | **0.612** | CONNECT   |
-| OWT 3   | 0.196            | **0.825** | 44.990     | -18.499    | 283 | 0         | 0.712                | MuBR      |
-| OWT 3   | 0.152            | 0.655              | 55.836     | 36.955     | 283 | 0         | 1.427                | OC3M      |
-| OWT 3   | 0.197            | 0.743              | 46.237     | 9.863      | 283 | 0         | 0.803                | OC5-Gohin |
-| OWT 4   | **0.702** | **0.870** | **33.802** | **-3.737** | 344 | 0         | **0.148** | CONNECT   |
-| OWT 4   | 0.515            | 0.597              | 51.498     | -35.330    | 344 | 0         | 0.745                | MuBR      |
-| OWT 4   | 0.152            | 0.572              | 63.927     | -58.791    | 344 | 0         | 1.427                | OC3M      |
-| OWT 4   | 0.208            | 0.788              | 61.950     | -49.994    | 340 | 4         | 1.717                | OC5-Gohin |
-| OWT 5   | **0.643** | 0.664              | **42.244** | **21.630** | 32  | 0         | **0.198** | CONNECT   |
-| OWT 5   | 0.012            | 0.562              | 230.281    | 226.145    | 32  | 0         | 1.427                | MuBR      |
-| OWT 5   | 0.416            | 0.615              | 100.211    | 100.022    | 32  | 0         | 0.554                | OC3M      |
-| OWT 5   | 0.208            | **0.987** | 82.071     | 64.594     | 31  | 1         | 0.457                | OC5-Gohin |
-| Overall | **0.870** | 0.961              | **36.769** | **1.168** | 804 | 0         | **0.173** | CONNECT   |
-| Overall | 0.777            | **0.963** | 49.477     | -31.877    | 804 | 0         | 0.548                | MuBR      |
-| Overall | 0.699            | 0.780              | 56.138     | -3.469     | 804 | 0         | 1.000                | OC3M      |
-| Overall | 0.698            | 0.857              | 51.441     | -15.322    | 795 | 9         | 1.556                | OC5-Gohin |
+#### Chl-a Map Examples
+<p align="center">
+  <img src="docs/images/Map_Rio.png" alt="Chlorophyll-a map of Rio de Janeiro" width="500">
+  <img src="docs/images/Map_EC_VN.png" alt="Chlorophyll-a map of English Channel and Lower Mekong River Vietnam" width="500">
+</p>
 
 
+  
 ### Advanced Use
 For more advanced features and configurations, including adjusting parameters or using different sensors, please refer to the detailed documentation provided within the project.
 
