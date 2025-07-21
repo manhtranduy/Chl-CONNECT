@@ -163,9 +163,9 @@ function [Chl, Class, P, Chla,invalid_mask] = Chl_CONNECT(Rrs,opts)
         inputFilePath=fullfile(LUT_dir,'NN','Rrs');
     end
 
-    if strcmp(opts.sensor,'msi')
-        Rrs_input_1 = Rrs_input_2;
-    end
+    % if strcmp(opts.sensor,'msi')
+    %     Rrs_input_1 = Rrs_input_2;
+    % end
     
     % Apply clear model
     model_clearPath = fullfile(inputFilePath,'model_clear.h5');
