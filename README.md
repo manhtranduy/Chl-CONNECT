@@ -5,9 +5,9 @@ Chl-CONNECT is a Python/MATLAB library designed for estimating Chlorophyll-a con
 The library applies machine learning and statistical methods to predict chlorophyll concentrations and classify water body into different Optical Water Types.
 
 ### Key Features
-- 🛰️ Multi-sensor support: MODIS, MERIS, Sentinel-3/OLCI, Sentinel-2/MSI
-- 🤖 Chlorophyll-a estimation
-- 🌊 Optical Water Type (OWT) classification
+- Multi-sensor support: MODIS, MERIS, Sentinel-3/OLCI, Sentinel-2/MSI
+- Chlorophyll-a estimation for clear and turbid waters
+- Optical Water Type (OWT) classification
 
 
 ## About
