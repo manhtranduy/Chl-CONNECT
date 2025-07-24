@@ -165,13 +165,15 @@ def Eumetsat_classif17(Rrs,
 
     if len(Rrs.shape)==2:
         if Rrs.shape[1]!=len(waveLengths_visible):
-            AssertionError(f'Rrs must contain {len(waveLengths_visible)} columns corresponding to \
-                           {waveLengths_visible} of {sensor} sensor')
+            raise AssertionError(
+                f'Rrs must contain {len(waveLengths_visible)} columns corresponding to '
+                f'{waveLengths_visible} of {sensor} sensor')
         rows, cols = (-1,1)
     elif len(Rrs.shape)==3:
         if Rrs.shape[2]!=len(waveLengths_visible):
-            AssertionError(f'Rrs must contain {len(waveLengths_visible)} components in the 3rd dimension corresponding to \
-                           {waveLengths_visible} of {sensor} sensor')
+            raise AssertionError(
+                f'Rrs must contain {len(waveLengths_visible)} components in the 3rd dimension corresponding to '
+                f'{waveLengths_visible} of {sensor} sensor')
         rows, cols, bands = Rrs.shape
         Rrs = Rrs.reshape(rows * cols, bands)
         
@@ -260,13 +262,15 @@ def classif5(Rrs,
 
     if len(Rrs.shape)==2:
         if Rrs.shape[1]!=len(waveLengths_visible):
-            AssertionError(f'Rrs must contain {len(waveLengths_visible)} columns corresponding to \
-                           {waveLengths_visible} of {sensor} sensor')
+            raise AssertionError(
+                f'Rrs must contain {len(waveLengths_visible)} columns corresponding to '
+                f'{waveLengths_visible} of {sensor} sensor')
         rows, cols = (-1,1)
     elif len(Rrs.shape)==3:
         if Rrs.shape[2]!=len(waveLengths_visible):
-            AssertionError(f'Rrs must contain {len(waveLengths_visible)} components in the 3rd dimension corresponding to \
-                           {waveLengths_visible} of {sensor} sensor')
+            raise AssertionError(
+                f'Rrs must contain {len(waveLengths_visible)} components in the 3rd dimension corresponding to '
+                f'{waveLengths_visible} of {sensor} sensor')
         rows, cols, bands = Rrs.shape
         Rrs = Rrs.reshape(rows * cols, bands)
     
