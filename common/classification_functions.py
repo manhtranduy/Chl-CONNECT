@@ -232,7 +232,7 @@ def classif5(Rrs,
             logRrs=True,
             spectralShift=False):
     """
-    Classifies Rrs data into 17 OWTs according to Tran et al., (2023). 
+    Classifies Rrs data into 5 OWTs according to Tran et al., (2023).
    
     Parameters:
         Rrs (np.ndarray): Remote sensing reflectance data, which can be multi-dimensional, either in list or numpy array format.
