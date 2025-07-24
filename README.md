@@ -150,5 +150,14 @@ Our model has been validated against an extensive in-situ/matchup dataset gather
 ### Advanced Use
 For more advanced features and configurations, including adjusting parameters or using different sensors, please refer to the detailed documentation provided within the project.
 
+### Block Processing Example
+Large images can be processed using the new block processing option. The script
+`example_block_processing.py` demonstrates how to load an HDF5 file and run the
+CONNECT algorithm block by block:
+
+```bash
+python example_block_processing.py
+```
+
 ## Contributing
 We warmly welcome contributions to the Chl-CONNECT project. Please fork the repository, make your improvements or fixes, and submit a pull request for review.

@@ -3,6 +3,7 @@
 # import numpy as np
 # import joblib
 # import os
+from __future__ import annotations
 
 # class Chl_NN_2_17:
 #     def __init__(self,Rrs_input: list[np.ndarray],
@@ -89,14 +90,18 @@
 import common.classification_functions as cf
 import common.meta
 import numpy as np
+
 import joblib
 import os
 import time
 
+from typing import List
+
+
 class Chl_NN_2_17:
-    def __init__(self, Rrs_input: list[np.ndarray], 
-                 method: str = 'logreg', 
-                 distribution: str ='gamma', 
+    def __init__(self, Rrs_input: List[np.ndarray],
+                 method: str = 'logreg',
+                 distribution: str ='gamma',
                  sensor: str ='MODIS',
                  logRrsNN: bool = False,
                  logRrsClassif: bool = False,
