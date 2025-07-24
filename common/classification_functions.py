@@ -118,10 +118,10 @@ def probability(model, rrs_norm,
     if method =='logreg':
         logreg_model, scaler = model
         nc = len(logreg_model.classes_)
-        valid_rrs_input = scaler.transform(valid_rrs_input)
-
-        p = np.full((rrs_norm.shape[0], nc),np.nan)
-        p[valid_indices]=logreg_model.predict_proba(valid_rrs_input)
+        p = np.full((rrs_norm.shape[0], nc), np.nan)
+        if valid_rrs_input.size > 0:
+            valid_rrs_input = scaler.transform(valid_rrs_input)
+            p[valid_indices] = logreg_model.predict_proba(valid_rrs_input)
 
     # Determine class with highest probability
     Class = np.zeros(rrs_norm.shape[0], dtype=int)
