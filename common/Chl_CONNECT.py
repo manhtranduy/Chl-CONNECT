@@ -30,14 +30,15 @@ class Chl_CONNECT:
         Chl = chl_conn.Chl
         Class = chl_conn.Class
     """
-    def __init__(self, Rrs_input: list[np.ndarray], 
-                 method: str = 'logreg', 
-                 distribution: str ='gamma', 
+    def __init__(self, Rrs_input: list[np.ndarray],
+                 method: str = 'logreg',
+                 distribution: str ='gamma',
                  sensor: str ='MODIS',
                  spectralShift: bool = True,
                  logRrsNN: bool = False,
                  logRrsClassif: bool = False,
-                 pTransform: bool = False):
+                 pTransform: bool = False,
+                 block_size: tuple[int, int] | None = None):
         self.Rrs_input = Rrs_input
         self.method = method
         self.distribution = distribution
@@ -46,6 +47,12 @@ class Chl_CONNECT:
         self.logRrsClassif = logRrsClassif
         self.pTransform = pTransform
         self.spectralShift = spectralShift
+        self.block_size = block_size
+
+        if self.block_size and isinstance(Rrs_input, np.ndarray) and Rrs_input.ndim == 3:
+            self._process_blocks(Rrs_input)
+            return
+
         # Define band mappings for different sensors
         bands_map = {
             'MODIS': [412, 443, 488, 531, 551, 667, 748],
@@ -146,6 +153,32 @@ class Chl_CONNECT:
             self.Chl[..., 0], self.Chl[..., 1] = Chl[:, 0].reshape(init_shape), Chl[:, 1].reshape(init_shape)
         else:
             self.Chl = Chl
+
+    def _process_blocks(self, data: np.ndarray) -> None:
+        """Process large 3-D arrays block by block."""
+        bsx, bsy = self.block_size
+        ny, nx, nb = data.shape
+        self.Chl_comb = np.empty((ny, nx), dtype=float)
+        self.Class = np.empty((ny, nx), dtype=int)
+        prob = None
+        chl_full = None
+        for i in range(0, ny, bsx):
+            for j in range(0, nx, bsy):
+                block = data[i:i+bsx, j:j+bsy, :]
+                res = Chl_CONNECT(block, method=self.method, distribution=self.distribution,
+                                  sensor=self.sensor, spectralShift=self.spectralShift,
+                                  logRrsNN=self.logRrsNN, logRrsClassif=self.logRrsClassif,
+                                  pTransform=self.pTransform, block_size=None)
+                self.Chl_comb[i:i+res.Chl_comb.shape[0], j:j+res.Chl_comb.shape[1]] = res.Chl_comb
+                self.Class[i:i+res.Class.shape[0], j:j+res.Class.shape[1]] = res.Class
+                if prob is None:
+                    prob = np.empty((ny, nx, res.p.shape[2]))
+                    chl_full = np.empty((ny, nx, res.Chl.shape[2]))
+                prob[i:i+res.p.shape[0], j:j+res.p.shape[1], :] = res.p
+                chl_full[i:i+res.Chl.shape[0], j:j+res.Chl.shape[1], :] = res.Chl
+
+        self.p = prob
+        self.Chl = chl_full
 
 def standardize(Z, means, stds):
     """
