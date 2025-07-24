@@ -23,7 +23,7 @@ for i = 1: length(wl)
     eval(sprintf('Rrs%i_l2gen=T.Rrs%i_med;',wl(i),wl(i)))
 end
 
-% Contruct input
+% Construct input
 Rrs_input_l2gen=[Rrs412_l2gen Rrs443_l2gen Rrs488_l2gen Rrs531_l2gen Rrs551_l2gen Rrs667_l2gen Rrs748_l2gen];
 
 % Perform CONNECT algorithm
