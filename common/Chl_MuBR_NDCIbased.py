@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+from typing import List
+
 import common.classification_functions as cf
 import numpy as np
 import os
@@ -30,8 +34,8 @@ class Chl_MuBR_NDCIbased:
         Chl = chl_mubr.Chl
         Class = chl_mubr.Class
     """
-    def __init__(self, Rrs_input: list[np.ndarray], 
-                 method: str = 'logreg', 
+    def __init__(self, Rrs_input: List[np.ndarray],
+                 method: str = 'logreg',
                  distribution: str ='normal', 
                  sensor: str ='OLCI',
                  spectralShift: bool = True,
