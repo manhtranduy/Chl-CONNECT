@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import h5py
 import numpy as np
 import matplotlib.pyplot as plt
@@ -20,13 +22,22 @@ def main():
 
     connect = Chl_CONNECT(rrs, sensor="MSI", block_size=(256, 256))
     chl = connect.Chl_comb
+    classes = connect.Class
 
-    plt.figure(figsize=(8, 6))
-    plt.pcolormesh(lon, lat, chl, shading="auto", cmap="viridis")
-    plt.colorbar(label="Chl-a (mg m$^{-3}$)")
-    plt.xlabel("Longitude")
-    plt.ylabel("Latitude")
-    plt.title("CONNECT Chlorophyll-a")
+    fig, axes = plt.subplots(1, 2, figsize=(12, 6))
+
+    im = axes[0].pcolormesh(lon, lat, chl, shading="auto", cmap="viridis")
+    fig.colorbar(im, ax=axes[0], label="Chl-a (mg m$^{-3}$)")
+    axes[0].set_xlabel("Longitude")
+    axes[0].set_ylabel("Latitude")
+    axes[0].set_title("CONNECT Chlorophyll-a")
+
+    class_im = axes[1].pcolormesh(lon, lat, classes, shading="auto", cmap="tab10", vmin=1, vmax=5)
+    fig.colorbar(class_im, ax=axes[1], label="OWT class")
+    axes[1].set_xlabel("Longitude")
+    axes[1].set_ylabel("Latitude")
+    axes[1].set_title("OWT Classification")
+
     plt.tight_layout()
     plt.show()
 

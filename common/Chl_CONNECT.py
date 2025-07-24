@@ -1,6 +1,11 @@
+from __future__ import annotations
+
+import os
+from typing import List, Optional, Tuple, Union
+import math
+
 import common.classification_functions as cf
 import numpy as np
-import os
 
 
 class Chl_CONNECT:
@@ -30,7 +35,7 @@ class Chl_CONNECT:
         Chl = chl_conn.Chl
         Class = chl_conn.Class
     """
-    def __init__(self, Rrs_input: list[np.ndarray],
+    def __init__(self, Rrs_input: Union[List[np.ndarray], np.ndarray],
                  method: str = 'logreg',
                  distribution: str ='gamma',
                  sensor: str ='MODIS',
@@ -38,7 +43,7 @@ class Chl_CONNECT:
                  logRrsNN: bool = False,
                  logRrsClassif: bool = False,
                  pTransform: bool = False,
-                 block_size: tuple[int, int] | None = None):
+                 block_size: Optional[Tuple[int, int]] = None):
         self.Rrs_input = Rrs_input
         self.method = method
         self.distribution = distribution
@@ -158,12 +163,16 @@ class Chl_CONNECT:
         """Process large 3-D arrays block by block."""
         bsx, bsy = self.block_size
         ny, nx, nb = data.shape
+        total_blocks = math.ceil(ny / bsx) * math.ceil(nx / bsy)
+        block_idx = 0
         self.Chl_comb = np.empty((ny, nx), dtype=float)
         self.Class = np.empty((ny, nx), dtype=int)
         prob = None
         chl_full = None
         for i in range(0, ny, bsx):
             for j in range(0, nx, bsy):
+                block_idx += 1
+                print(f"Processing block {block_idx}/{total_blocks}")
                 block = data[i:i+bsx, j:j+bsy, :]
                 res = Chl_CONNECT(block, method=self.method, distribution=self.distribution,
                                   sensor=self.sensor, spectralShift=self.spectralShift,
