@@ -3,6 +3,10 @@ from scipy.integrate import trapezoid
 from scipy.special import gamma, gammainc
 from scipy.stats import multivariate_normal
 import os
+import warnings
+from sklearn.exceptions import InconsistentVersionWarning
+
+warnings.filterwarnings("ignore", category=InconsistentVersionWarning)
 
 def normalize_Rrs(Rrs,wave_lengths):
     """
