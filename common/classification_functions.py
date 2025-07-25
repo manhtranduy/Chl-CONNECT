@@ -24,9 +24,12 @@ def normalize_Rrs(Rrs,wave_lengths):
         normalized_data = normalize_Rrs(Rrs_data, wave_lengths)
     """
     area = trapezoid(Rrs, wave_lengths, axis=1)
-    
+
+    # Avoid division by zero by replacing zero areas with NaN
+    area_safe = np.where(area == 0, np.nan, area)
+
     # Normalize Rrs by the calculated area
-    Rrs_norm = Rrs / area[:, np.newaxis]
+    Rrs_norm = Rrs / area_safe[:, np.newaxis]
     return Rrs_norm
 
 def probability(model, rrs_norm, 

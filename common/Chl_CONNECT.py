@@ -147,7 +147,13 @@ class Chl_CONNECT:
         mask2=Chl[:,1]>15000
         p2[mask2]=0
         
-        self.Chl_comb = (p1*Chl[:,0] + p2*Chl[:,1])/(p1+p2)
+        denom = p1 + p2
+        # Avoid division by zero when both probabilities are zero
+        with np.errstate(divide='ignore', invalid='ignore'):
+            self.Chl_comb = np.divide(p1*Chl[:,0] + p2*Chl[:,1],
+                                      denom,
+                                      out=np.full_like(denom, np.nan, dtype=float),
+                                      where=denom != 0)
         
         # Reshape results to match input dimensions
         self.Chl_comb = self.Chl_comb.reshape(init_shape)
