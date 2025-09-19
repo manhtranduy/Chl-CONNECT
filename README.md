@@ -12,6 +12,7 @@ The library applies machine learning and statistical methods to predict chloroph
 
 ## About
 This repository contains source code for the following papers:
+* Tran, M.D., Vantrepotte, V., El Hourany, R., Jorge, D.S.F., Kampel, M., Cardoso dos Santos, J.F., Oliveira, E.N., Paranhos, R., Jamet, C., 2025. Combination of neural network models for estimating Chlorophyll-a over turbid and clear waters (CONNECT). Front. Remote Sens. 6. https://doi.org/10.3389/frsen.2025.1570827
 * Tran, M.D.; Vantrepotte, V.; Loisel, H.; Oliveira, E.N.; Tran, K.T.; Jorge, D.; Mériaux, X.; Paranhos, R. Band Ratios Combination for Estimating Chlorophyll-a from Sentinel-2 and Sentinel-3 in Coastal Waters. Remote Sens. 2023, 15, 1653. https://doi.org/10.3390/rs15061653
 
 ## Installation
