@@ -32,7 +32,7 @@ class Chl_CONNECT:
         from Chl_CONNECT import Chl_CONNECT
         chl_conn = Chl_CONNECT(Rrs_input=[Rrs412,Rrs443,Rrs488,Rrs531,Rrs551,Rrs667,Rrs748], 
                                sensor='MODIS')
-        Chl = chl_conn.Chl
+        Chl = chl_conn.Chl_comb
         Class = chl_conn.Class
     """
     def __init__(self, Rrs_input: Union[List[np.ndarray], np.ndarray],
