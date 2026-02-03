@@ -217,6 +217,8 @@ function [Chl, Class, P, Chla,invalid_mask] = Chl_CONNECT(Rrs,opts)
     
     % Return Chl
     Class = reshape(Class,mx,my);
+    Chla{1} = reshape(Chla{1},mx,my);
+    Chla{2} = reshape(Chla{2},mx,my);
     Chl(Class==opts.classmask)=nan;
     Chl=reshape(Chl,mx,my);
 end
