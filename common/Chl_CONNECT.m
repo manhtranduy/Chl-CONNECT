@@ -207,7 +207,7 @@ function [Chl, Class, P, Chla,invalid_mask] = Chl_CONNECT(Rrs,opts)
     mask1=Chla{1}>15000;
     p1(mask1)=0;
     mask2=Chla{2}>15000;
-    p1(mask2)=0;
+    p2(mask2)=0;
 
     % Perform the combination with the OWT-specific probabilities as
     % Blending coefficients
