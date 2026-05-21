@@ -36,12 +36,25 @@ class Chl_MuBR_NDCIbased:
     """
     def __init__(self, Rrs_input: List[np.ndarray],
                  method: str = 'logreg',
-                 distribution: str ='normal', 
+                 distribution: str ='gamma',
                  sensor: str ='OLCI',
-                 spectralShift: bool = True,
-                 logRrsClassif: bool = True,
+                 spectralShift: bool = False,
+                 logRrsClassif: bool = False,
                  pTransform: bool = False,
-                 version:int = 1):
+                 version:int = 1,
+                 classmask: int = 0):
+        if isinstance(Rrs_input, (list, tuple)):
+            Rrs_input = np.stack(Rrs_input, axis=-1)
+
+        method = method.lower()
+        distribution = distribution.lower()
+        sensor = sensor.upper()
+        if sensor == 'MERIS':
+            sensor = 'OLCI'
+
+        if classmask not in (0, 1, 2, 3, 4, 5):
+            raise ValueError('classmask must be one of 0, 1, 2, 3, 4, or 5')
+
         self.Rrs_input = Rrs_input
         self.method = method
         self.distribution = distribution
@@ -50,6 +63,7 @@ class Chl_MuBR_NDCIbased:
         self.pTransform = pTransform
         self.spectralShift = spectralShift
         self.version = version
+        self.classmask = classmask
         # Define band mappings for different sensors
         bands_map = {
             'MODIS': [412, 443, 488, 531, 551, 667, 748],
@@ -103,11 +117,8 @@ class Chl_MuBR_NDCIbased:
         
         input_123=np.column_stack([R1,R2,R3])
         
-        
-
-        
         # Classification
-        self.Class,p = cf.classif5(Rrs[:,:6],
+        self.Class,p = cf.classif5(Rrs[:,:-1],
                                     method = self.method,
                                     sensor=self.sensor,
                                     distribution=self.distribution,
@@ -118,6 +129,9 @@ class Chl_MuBR_NDCIbased:
         
         if self.pTransform:
             p = np.sqrt(p) / np.sum(np.sqrt(p), axis=1, keepdims=True)
+
+        last_band_bad = (Rrs[:, -1] <= 0) | np.isnan(Rrs[:, -1])
+        p[last_band_bad, 3:5] = 0
         
         # Prepare inputs for Chl predictions
         mask = ~np.isnan(input_123).any(axis=1) & ~np.isinf(input_123).any(axis=1)
@@ -134,27 +148,35 @@ class Chl_MuBR_NDCIbased:
         if sensor=='OLCI' or sensor =='MSI':
             Chl[mask, 1] = 10.**(coef4[0] + coef4[1]*input_4[mask] + coef4[2]*(input_4[mask]**2))
         if sensor=='OLI' or sensor =='MODIS':
-            Chl[mask, 1] = 10.**(coef123[0] + coef123[1]*input_123[mask,0] + 
-                                              coef123[2]*input_123[mask,1] + 
-                                              coef123[3]*input_123[mask,2] +
-                                              coef123[4]*input_4[mask])
-        
-        # Adjustments based on p and class
-        p1 = np.nansum(p[:,:3],axis=1)
-        p2 = np.nansum(p[:,3:5],axis=1)
+            Chl[mask, 1] = 10.**(coef4[0] + coef4[1]*input_123[mask,0] +
+                                             coef4[2]*input_123[mask,1] +
+                                             coef4[3]*input_123[mask,2] +
+                                             coef4[4]*input_4[mask])
 
-        
-        invalid_mask = ~np.isnan(Chl[:,0]) & np.isnan(Chl[:,1]) & ~(self.Class == 4) & ~(self.Class == 5)
-        p2[invalid_mask] = 0
-        Chl[invalid_mask, 1] = 0
-        
-        # Get rid of unrealistic values
+        class_is_nan = np.isnan(self.Class.astype(float))
+        chl2_zero_mask = (Rrs[:, -1] <= 0) | (np.isnan(Rrs[:, -1]) & (self.Class != 4) & ~class_is_nan)
+        Chl[chl2_zero_mask, 1] = 0
+
+        # Adjustments based on p and class
+        p1 = np.sum(p[:,:3],axis=1)
+        if self.classmask == 5:
+            p2 = np.sum(p[:,3:4],axis=1)
+        else:
+            p2 = np.sum(p[:,3:5],axis=1)
+
+        # Exclude unrealistic values
         mask1=Chl[:,0]>15000
         p1[mask1]=0
         mask2=Chl[:,1]>15000
         p2[mask2]=0
-        
-        self.Chl_comb = (p1*Chl[:,0] + p2*Chl[:,1])/(p1+p2)
+
+        denom = p1 + p2
+        with np.errstate(divide='ignore', invalid='ignore'):
+            self.Chl_comb = np.divide(p1*Chl[:,0] + p2*Chl[:,1],
+                                      denom,
+                                      out=np.full_like(denom, np.nan, dtype=float),
+                                      where=denom != 0)
+        self.Chl_comb[self.Class == self.classmask] = np.nan
         
         # Reshape results to match input dimensions
         self.Chl_comb = self.Chl_comb.reshape(init_shape)

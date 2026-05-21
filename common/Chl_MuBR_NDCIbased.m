@@ -42,8 +42,8 @@ function [Chl, Class, P, Chla] = Chl_MuBR_NDCIbased(Rrs,opts)
     arguments 
         Rrs
         opts.sensor char{mustBeMember(opts.sensor,{'olci','meris','msi','modis','oli'})} = 'olci'
-        opts.method char {mustBeMember(opts.method,{'pdf','logreg','svm'})} = 'pdf'
-        opts.distribution char {mustBeMember(opts.distribution,{'normal','gamma'})} = 'normal'
+        opts.method char {mustBeMember(opts.method,{'pdf','logreg','svm'})} = 'logreg'
+        opts.distribution char {mustBeMember(opts.distribution,{'normal','gamma'})} = 'gamma'
         opts.classmask double {mustBeMember(opts.classmask,[0,1,2,3,4,5])} = 0
         opts.version int8 {mustBeMember(opts.version,[1,2])} = 1 %
         opts.spectralShift logical = false
@@ -196,19 +196,28 @@ function [Chl, Class, P, Chla] = Chl_MuBR_NDCIbased(Rrs,opts)
     % exclude bad values in NIR band
     eval(sprintf('Chla{2}(Rrs%i<=0|isnan(Rrs%i)&Class~=4&~isnan(Class))=0;',vis_nir_bands(end),vis_nir_bands(end)))
 
-    % Perform the combination with the OWT-specific probabilities as
-    % Blending coefficients
+    % OWT-specific probabilities as blending coefficients
     if opts.classmask==5
-        Chl_n(:,1)=sum(p(:,1:3),2).*Chla{1};
-        Chl_n(:,2)=sum(p(:,4),2).*Chla{2};
-        Chl=sum(Chl_n,2)./sum(p(:,1:4),2);
+        p1=sum(p(:,1:3),2);
+        p2=sum(p(:,4),2);
     elseif opts.classmask<5
-        Chl_n(:,1)=sum(p(:,1:3),2).*Chla{1};
-        Chl_n(:,2)=sum(p(:,4:5),2).*Chla{2};
-        Chl=sum(Chl_n,2)./sum(p(:,1:5),2);
+        p1=sum(p(:,1:3),2);
+        p2=sum(p(:,4:5),2);
     else
         error('Error: Class number must be lower than 5');
     end
+
+    % Exclude unrealistic values
+    mask1=Chla{1}>15000;
+    p1(mask1)=0;
+    mask2=Chla{2}>15000;
+    p2(mask2)=0;
+
+    % Perform the combination with the OWT-specific probabilities as
+    % blending coefficients
+    Chl_n(:,1)=p1.*Chla{1};
+    Chl_n(:,2)=p2.*Chla{2};
+    Chl=sum(Chl_n,2)./(p1+p2);
 
     % Return Chl
     Chl(Class==opts.classmask)=nan;

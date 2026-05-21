@@ -53,6 +53,9 @@ def probability(model, rrs_norm,
     Example:
         class_probs = probability(model, normalized_data, method='pdf', distribution='gamma', logRrs=True)
     """
+    method = method.lower()
+    distribution = distribution.lower()
+
     # Transform Rrs
     if logRrs:
         rrs_input = np.log10(rrs_norm.astype(float))
@@ -87,8 +90,7 @@ def probability(model, rrs_norm,
                 Pdf[:, i] = multivariate_normal.pdf(valid_rrs_input, mean=mean_matrix[:, :, i].ravel(), cov=cov_matrix[:, :, i])
             elif distribution == 'gamma':
                 threshold_D=432
-                D_over_2 = D[:, i] / 2
-                Pdf[:, i] = gammainc(D_over_2, b / 2) / gamma(b / 2)
+                Pdf[:, i] = gammainc(b / 2, D[:, i] / 2) / gamma(b / 2)
                 
         
         # Treating unclssified pixels
@@ -110,8 +112,7 @@ def probability(model, rrs_norm,
                 Pdf[unclassified_ind, i] = (1 / MS) * np.exp(-0.5 * D[unclassified_ind, i])
                 
             elif distribution == 'gamma':
-                D_over_2 = np.sqrt(D[unclassified_ind, i]) / 2 
-                Pdf[unclassified_ind, i] = gammainc(D_over_2, b / 2) / gamma(b / 2)
+                Pdf[unclassified_ind, i] = gammainc(b / 2, D[unclassified_ind, i] / 2) / gamma(b / 2)
                 
                 
         # Normalize probabilities
@@ -257,6 +258,12 @@ def classif5(Rrs,
         labels, probabilities = classif5(Rrs_data)
     """
 
+    method = method.lower()
+    distribution = distribution.lower()
+    sensor = sensor.upper()
+    if sensor == 'MERIS':
+        sensor = 'OLCI'
+
     if isinstance(Rrs, list):
         Rrs = np.stack(Rrs,2)
         
@@ -266,6 +273,8 @@ def classif5(Rrs,
         waveLengths_visible=[412,443,488,531,551,667]
     elif sensor == 'MSI':
         waveLengths_visible=[443,490,560,665]
+    elif sensor == 'OLI':
+        waveLengths_visible=[443,490,560,655]
 
     if len(Rrs.shape)==2:
         if Rrs.shape[1]!=len(waveLengths_visible):
@@ -294,8 +303,9 @@ def classif5(Rrs,
     file_path = os.path.join(os.path.dirname(__file__),'LUTs',sensor,'5OWTs',method)
 
     if method == 'pdf':
-        covariance_matrix_5 = np.full((6,6,5),np.nan)
-        mean_matrix_5 = np.full((1,6,5),np.nan)
+        n_bands = len(waveLengths_visible)
+        covariance_matrix_5 = np.full((n_bands,n_bands,5),np.nan)
+        mean_matrix_5 = np.full((1,n_bands,5),np.nan)
     
         for i in range(5):
             cov_file = os.path.join(file_path, f'Cov5_C{i+1}.txt')

@@ -9,7 +9,6 @@ Created on Sat May  4 16:29:11 2024
 # =============================================================================
 import pandas as pd
 import os
-import common.meta as meta
 import numpy as np
 # os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
@@ -23,10 +22,7 @@ warnings.filterwarnings("ignore", category=InconsistentVersionWarning)
 
 
 # Read matchup data
-matchup_data_path=os.path.join('D:/work/Codes/ChlaPaper/Chla_update/TrainNN/github/Chl-CONNECT/',
-                               'MDB_1990_08_28_2023_07_17_modis_l2gen.csv')
-
-# matchup_data_path=os.path.join('MDB_1990_08_28_2023_07_17_modis_l2gen.csv')
+matchup_data_path=os.path.join('MDB_1990_08_28_2023_07_17_modis_l2gen.csv')
 
 matchup_df=pd.read_csv(matchup_data_path)
 
@@ -35,7 +31,6 @@ matchup_df=matchup_df.reset_index()
 
 
 # Load Rrs
-bands=meta.SENSOR_BANDS['MODIS-TRAIN']
 bands=[412, 443, 488, 531, 551, 667, 748]
 Rrs={}
 Rrs_mc={}
